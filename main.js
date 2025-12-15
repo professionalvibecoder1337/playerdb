@@ -87,14 +87,13 @@ function clearLocal() { state.localPlayersJson = null; document.getElementById('
 
 function download() {
     const json = JSON.stringify(build(), null, 4);
-    const b = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(b);
+    const dataUrl = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
     const a = document.createElement('a');
-    a.href = url;
+    a.href = dataUrl;
     a.download = 'Players.json';
     document.body.appendChild(a);
     a.click();
-    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+    document.body.removeChild(a);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
