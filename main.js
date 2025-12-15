@@ -86,8 +86,15 @@ const refresh = () => { process(); renderDb(); renderMap(); renderStats(); };
 function clearLocal() { state.localPlayersJson = null; document.getElementById('local-status').innerHTML = ''; document.getElementById('local-file-input').value = ''; refresh(); }
 
 function download() {
-    const b = new Blob([JSON.stringify(build(), null, 4)], { type: 'application/json' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'Players.json'; a.click();
+    const json = JSON.stringify(build(), null, 4);
+    const b = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(b);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Players.json';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
