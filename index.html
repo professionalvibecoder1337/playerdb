@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>playerdb converter</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app">
+        <div class="sec">
+            <span class="lbl">players.json <label class="act">[select]<input type="file" id="local-file-input"
+                        accept=".json" hidden /></label></span>
+            <div id="local-status"></div>
+        </div>
+
+        <hr />
+
+        <div class="sec">
+            <span class="lbl">import external databases <button class="tbtn active" id="mode-url">[url]</button> <button
+                    class="tbtn" id="mode-file">[file]</button></span>
+
+            <div id="url-mode">
+                <span class="row"><input type="text" id="url-input" placeholder="paste url" /><button id="add-url-btn"
+                        class="act">[add]</button></span>
+            </div>
+
+            <div id="file-mode" class="hide">
+                <label class="act">[select file]<input type="file" id="ready-file-input" accept=".json"
+                        hidden /></label>
+            </div>
+
+            <div class="quick"><button class="qb"
+                    data-url="https://raw.githubusercontent.com/AveraFox/Tom/refs/heads/main/playerlist.vorobey-hackerpolice.json">vorobey-hackerpolice</button>
+                <button class="qb"
+                    data-url="https://raw.githubusercontent.com/anaemicelle/tf2bd/refs/heads/main/playerlist.sterling.json">sterling</button>
+            </div>
+
+            <div id="loaded-databases"></div>
+        </div>
+
+        <hr />
+
+        <div class="sec">
+            <span class="lbl">mapping</span>
+            <div id="mapping-container"><span class="dim">load players.json first</span></div>
+        </div>
+
+        <hr />
+
+        <div class="sec">
+            <span class="lbl">stats</span>
+            <div class="stats" id="stats-container">
+                <span><b id="stat-imported">0</b> imported</span>
+                <span><b id="stat-added">0</b> were new</span>
+                <span><b id="stat-duplicates">0</b> duplicates</span>
+            </div>
+        </div>
+
+        <hr />
+
+        <button id="convert-btn" class="exp">export players.json</button>
+    </div>
+
+    <script type="module" src="/main.js"></script>
+</body>
+
+</html>
