@@ -7,7 +7,15 @@ async function fetchUrl(url) {
     throw 'fail';
 }
 
-const parseId = s => { const m = s.match(/\[U:1:(\d+)\]/); return m ? m[1] : null; };
+const parseId = s => {
+    if (!s) return null;
+    const m = s.match(/\[U:1:(\d+)\]/);
+    if (m) return m[1];
+    if (/^7656\d{13}$/.test(s)) {
+        try { return (BigInt(s) - 76561197960265728n).toString(); } catch { }
+    }
+    return null;
+};
 
 async function loadUrl(url) {
     const d = await fetchUrl(url);
