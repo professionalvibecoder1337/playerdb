@@ -99,11 +99,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     $('add-url-btn')?.addEventListener('click', async () => {
         const u = $('url-input').value.trim(); if (!u) return;
-        try { state.loadedDatabases.push(await loadUrl(u)); refresh(); $('url-input').value = ''; } catch { alert('fail'); }
+        if (state.loadedDatabases.some(db => db.url === u)) { alert('already loaded'); return; }
+        try { const db = await loadUrl(u); db.url = u; state.loadedDatabases.push(db); refresh(); $('url-input').value = ''; } catch { alert('fail'); }
     });
 
     document.querySelectorAll('[data-url]').forEach(b => b.addEventListener('click', async () => {
-        b.disabled = true; try { state.loadedDatabases.push(await loadUrl(b.dataset.url)); refresh(); } catch { alert('fail'); } b.disabled = false;
+        const u = b.dataset.url;
+        if (state.loadedDatabases.some(db => db.url === u)) { alert('already loaded'); return; }
+        b.disabled = true; try { const db = await loadUrl(u); db.url = u; state.loadedDatabases.push(db); refresh(); } catch { alert('fail'); } b.disabled = false;
     }));
 
     $('loaded-databases')?.addEventListener('click', e => { if (e.target.classList.contains('x')) { state.loadedDatabases.splice(+e.target.dataset.i, 1); refresh(); } });
