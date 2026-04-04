@@ -6,82 +6,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>playerdb converter</title>
     <link rel="stylesheet" href="/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div class="app">
-        <div class="sec">
-            <span class="lbl">players.json <label class="act">[select]<input type="file" id="local-file-input"
-                        accept=".json" hidden /></label></span>
-            <div id="local-status"></div>
+        <div class="layout">
+            <main class="main-col">
+                <div class="sec">
+                    <span class="lbl">players.json <label class="act">[select]<input type="file" id="local-file-input" accept=".json" hidden /></label></span>
+                    <div id="local-status"></div>
+                </div>
+
+                <hr />
+
+                <div class="sec">
+                    <span class="lbl">import external databases <button class="tbtn active" id="mode-url">[url]</button> <button class="tbtn" id="mode-file">[file]</button></span>
+
+                    <div id="url-mode">
+                        <span class="row"><input type="text" id="url-input" placeholder="paste url" /><button id="add-url-btn" class="act">[add]</button></span>
+                    </div>
+
+                    <div id="file-mode" class="hide">
+                        <label class="act">[select file]<input type="file" id="ready-file-input" accept=".json" hidden /></label>
+                    </div>
+
+                    <div class="quick">
+                        <button class="qb" data-url="https://raw.githubusercontent.com/AveraFox/Tom/refs/heads/main/playerlist.vorobey-hackerpolice.json">vorobey-hackerpolice</button>
+                        <button class="qb" data-url="https://raw.githubusercontent.com/professionalvibecoder1337/playerdb/refs/heads/main/dbs/playerlist.rijindb-cheaters.json">rijin (leaked)</button>
+                        <button class="qb" data-url="https://raw.githubusercontent.com/professionalvibecoder1337/playerdb/refs/heads/main/dbs/playerlist.rijin-SSAC.json">rijin (2)</button>
+                        <button class="qb" data-url="https://raw.githubusercontent.com/minein4/Shitlist/refs/heads/main/playerlist.shitlist.json">shitlist</button>
+                        <button class="qb" data-url="https://raw.githubusercontent.com/joekiller/joekiller-list/refs/heads/main/playerlist-raw.joekiller.json">joekiller</button>
+                        <button class="qb" data-url="https://raw.githubusercontent.com/surepy/tf2db-sleepy-list/refs/heads/main/playerlist.sleepy-external.json">sleepy-external</button>
+                        <button class="qb" data-url="https://raw.githubusercontent.com/surepy/tf2db-sleepy-list/refs/heads/main/playerlist.megacheaterdb.json">megacheaterdb</button>
+                        <button class="qb" data-url="https://raw.githubusercontent.com/surepy/tf2db-sleepy-list/refs/heads/main/playerlist.nullc0re.json">nullc0re</button>
+                        <button class="qb" data-url="https://raw.githubusercontent.com/surepy/tf2db-sleepy-list/refs/heads/main/playerlist.rgl-gg.json">rgl-gg</button>
+                    </div>
+
+                    <div id="loaded-databases"></div>
+                </div>
+
+                <hr />
+
+                <div class="sec">
+                    <span class="lbl">mapping</span>
+                    <div id="mapping-container"><span class="dim">load players.json first</span></div>
+                </div>
+
+                <hr />
+
+                <div class="sec">
+                    <span class="lbl">stats</span>
+                    <div class="stats stats-grid" id="stats-container">
+                        <div class="stats-row">
+                            <span class="stats-head">players</span>
+                            <span><b id="stat-imported">0</b> imported</span>
+                            <span><b id="stat-added">0</b> new</span>
+                            <span><b id="stat-duplicates">0</b> duplicates</span>
+                        </div>
+                        <div class="stats-divider" aria-hidden="true"></div>
+                        <div class="stats-row">
+                            <span class="stats-head">aliases</span>
+                            <span><b id="stat-aliases-imported">0</b> imported</span>
+                            <span><b id="stat-aliases-added">0</b> new</span>
+                            <span><b id="stat-aliases-duplicates">0</b> same</span>
+                            <span><b id="stat-aliases-conflicts">0</b> conflicts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <button id="convert-btn" class="exp">export players.json</button>
+            </main>
+
+            <aside class="side-col">
+                <div class="sec">
+                    <span class="lbl">aliases</span>
+                    <div id="aliases-container"><span class="dim">no aliases yet</span></div>
+                </div>
+
+                <hr />
+
+                <div class="sec">
+                    <span class="lbl">alias conflicts</span>
+                    <div id="alias-conflicts-container"><span class="dim">no conflicts</span></div>
+                </div>
+            </aside>
         </div>
+    </div>
 
-        <hr />
-
-        <div class="sec">
-            <span class="lbl">import external databases <button class="tbtn active" id="mode-url">[url]</button> <button
-                    class="tbtn" id="mode-file">[file]</button></span>
-
-            <div id="url-mode">
-                <span class="row"><input type="text" id="url-input" placeholder="paste url" /><button id="add-url-btn"
-                        class="act">[add]</button></span>
-            </div>
-
-            <div id="file-mode" class="hide">
-                <label class="act">[select file]<input type="file" id="ready-file-input" accept=".json"
-                        hidden /></label>
-            </div>
-
-            <div class="quick">
-                <button class="qb"
-                    data-url="https://raw.githubusercontent.com/AveraFox/Tom/refs/heads/main/playerlist.vorobey-hackerpolice.json">vorobey-hackerpolice</button>
-                <button class="qb"
-                    data-url="https://raw.githubusercontent.com/anaemicelle/tf2bd/refs/heads/main/playerlist.sterling.json">sterling</button>
-                <button class="qb"
-                    data-url="https://raw.githubusercontent.com/professionalvibecoder1337/playerdb/refs/heads/main/dbs/playerlist.rijindb-cheaters.json">rijin
-                    (leaked)</button>
-                <button class="qb"
-                    data-url="https://raw.githubusercontent.com/professionalvibecoder1337/playerdb/refs/heads/main/dbs/playerlist.rijin-SSAC.json">rijin
-                    (2)</button>
-                <button class="qb"
-                    data-url="https://raw.githubusercontent.com/minein4/Shitlist/refs/heads/main/playerlist.shitlist.json">shitlist</button>
-                <button class="qb"
-                    data-url="https://raw.githubusercontent.com/joekiller/joekiller-list/refs/heads/main/playerlist-raw.joekiller.json">joekiller</button>
-                <button class="qb"
-                    data-url="https://raw.githubusercontent.com/surepy/tf2db-sleepy-list/refs/heads/main/playerlist.sleepy-external.json">sleepy-external</button>
-                <button class="qb"
-                    data-url="https://raw.githubusercontent.com/surepy/tf2db-sleepy-list/refs/heads/main/playerlist.megacheaterdb.json">megacheaterdb</button>
-                <button class="qb"
-                    data-url="https://raw.githubusercontent.com/surepy/tf2db-sleepy-list/refs/heads/main/playerlist.nullc0re.json">nullc0re</button>
-                <button class="qb"
-                    data-url="https://raw.githubusercontent.com/surepy/tf2db-sleepy-list/refs/heads/main/playerlist.rgl-gg.json">rgl-gg</button>
-            </div>
-
-            <div id="loaded-databases"></div>
-        </div>
-
-        <hr />
-
-        <div class="sec">
-            <span class="lbl">mapping</span>
-            <div id="mapping-container"><span class="dim">load players.json first</span></div>
-        </div>
-
-        <hr />
-
-        <div class="sec">
-            <span class="lbl">stats</span>
-            <div class="stats" id="stats-container">
-                <span><b id="stat-imported">0</b> imported</span>
-                <span><b id="stat-added">0</b> were new</span>
-                <span><b id="stat-duplicates">0</b> duplicates</span>
-            </div>
-        </div>
-
-        <hr />
-
-        <button id="convert-btn" class="exp">export players.json</button>
+    <button id="changelog-toggle" class="changelog-toggle" aria-expanded="false">changelog</button>
+    <div id="changelog-panel" class="changelog-panel" aria-hidden="true">
+        <span class="lbl">update!!!!!!</span>
+        <div class="changelog-line"></div>
+        <ul>
+            <li>sterling owned L0L</li>
+            <li>changelog is now here</li>
+            <li>added alias support for amalgam playerlists</li>
+            <li>fixed import for external playerlists (files)</li>
+            <li>chatgpt'd, claude'd, gemini'd and grok'd everything. enjoy neuroslop</li>
+        </ul>
     </div>
 
     <script type="module" src="/main.js"></script>
